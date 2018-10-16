@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "rm(list=ls())\nmet <- read.csv('resAg.csv', header = T)\nread.table(file = \"http://biecek.pl/MOOC/dane/koty_ptaki.csv\", sep = \";\", dec= \",\", header = TRUE)\n\ninstall.packages(\"gdata\") \n#www.rstudio.com/products/rpackages\nlibrary(gdata)\npiwa <- read.xls(\"PiwaWyniki.xlsx\", 2)\npiwa [3 ,10]\npiwa [ ,5]\npiwa [2 ,]\n\nclass(piwa)\npiwa$Tester\npiwa$Rodzaj[30]\nsummary(piwa$Ocena)\n\ninstall.packages(\"SmarterPoland\")\nlibrary(SmarterPoland)\ntsdtr210 <- getEurostatRCV(\"educ_iste\")\nhead(tsdtr210,3)\nsummary(tsdtr210)\n\n#http://ggplot2.tidyverse.org/reference/ggplot.html\nggplot ( data = tsdtr210 [ tsdtr210 $ geo == \" PL \" ,] ,\n         aes (x = time , y = value, group = vehicle , colour = vehicle )) \n         + geom_line ()\n\nsave(piwa, file=\"PierwszeWyniki.rda\")\nload(\"PierwszeWyniki.rda\")\nwrite.csv(piwa,file=\"piwa.csv\")\n\nmet <- read.csv('resAg.csv')\nsummary(met)\n\nmet2 = read.csv(\"resAg.csv\", header = TRUE ,\n                 colClasses = c ( \" character \" , \" factor \" , \" factor \" ,\n                                  \" numeric \" , \" numeric \" , \" numeric \" , \" numeric \" ,\n                                  \" numeric \" , \" numeric \" , \" numeric \" , \" numeric \" ,\n                                  \" numeric \" , \" numeric \" , \" numeric \" , \" numeric \" ,\n                                  \" numeric \" , \" numeric \" , \" numeric \" ))\nsummary(met2)\n\n\n\na = sample(c(1, 2, 4), 1000, rep = TRUE,\n             prob = c (0.5 ,0.25 , 0.25))\nmean(a)\nMode <- function(x) {\n  ux <- unique(x)\n  ux [ which.max(tabulate(match(x, ux)))]\n}\nMode(a)\n\n\na = rexp(1000000, 2)\nld = mean(a) - sd(a)\nlg = mean(a)+ sd(a)\nsum(a > ld & a < lg )\na = runif(1000000)\nld = mean(a) - sd(a)\nlg = mean(a)+ sd(a)\nsum (a > ld & a < lg )\n\na = 100\nx = 1:1000\neps = rnorm (1000)\ny = x + a*eps\nplot(x, y)\ncor(x, y)\n\na = 100\nx = 1:1000\neps = rnorm(1000)\ny = x^2+a^2*eps\nplot(x, y)\ncor(x, y)\n\na = 0.1\nx = seq (0, 1, 0.001)\neps = rnorm (1001)\ny = ifelse(runif(1001) >0.5 , 1 , -1) * sqrt(1 - x^2) + a*eps\nplot(x, y)\ncor(x, y)\n\n#http://tylervigen.com/spurious-correlations\n\nhist(met$mean_Noise)\nhist(met$mean_SA)\nhist(met$mean_TA)\nhist(met$mean_Blockiness)\nhist(met$mean_Blockloss)\nhist(met$mean_Blur)\n\ninstall.packages (\"fitdistrplus\")\nlibrary(fitdistrplus)\nmet <- read.csv('resAg.csv')\nfitdistr(met$mean_Blur,'normal')\nks.test(met$mean_Blur, 'pnorm', mean=9.63, sd=5.61)\n\n#Proszę dopasować rozkład na podstawie tego tutoriala: https://www.r-bloggers.com/fitting-distributions-with-r/\n\n#Testowanie hipotez\nprop.test(12, 35, p=0.5)",
+    "created" : 1539153846105.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3100043568",
+    "id" : "A8CDF633",
+    "lastKnownWriteTime" : 1539157745,
+    "last_content_update" : 1539157745407,
+    "path" : "~/lab02/lab02.R",
+    "project_path" : "lab02.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
