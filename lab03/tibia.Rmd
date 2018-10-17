@@ -1,0 +1,101 @@
+---
+title: "Tibia"
+author: "Krzysztof Rusek"
+date: "11 pa?dziernika 2017"
+output: 
+  html_document: 
+    theme: spacelab
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('rvest')
+
+```
+
+# Notatki
+ * Dwie paczki: scrapR i rvest
+ 
+https://www.analyticsvidhya.com/blog/2017/03/beginners-guide-on-web-scraping-in-r-using-rvest-with-hands-on-knowledge/
+
+
+
+
+##  Newsy
+```{r}
+url_ <- 'https://www.neowin.net/'
+webpage <- read_html(url_)
+newsy <-html_nodes(webpage,'.news-item-title')
+html_text(newsy)
+
+```
+Lub w jednej linie
+```{r}
+require(magrittr)
+read_html(url_) %>% html_nodes('.news-item-title') %>% html_text()
+```
+
+```{r}
+require(magrittr)
+require(knitr)
+read_html('https://pl.wikipedia.org/wiki/Lotnisko') %>% 
+  html_nodes(xpath='//table[2]') %>% 
+  html_table() %>%
+  extract2(.,1) ->lotniska
+
+kable(lotniska)
+colnames(lotniska)<-c("Pozycja","Port lotniczy","Pa?stwo","Po?o?enie","Kod","Pasa?er?w","Pozycja w 2004")
+kable(lotniska)
+```
+
+# Tibia
+
+## Pobieranie
+```{r}
+url_ <- 'https://secure.tibia.com/community/?subtopic=worlds'
+webpage <- read_html(url_)
+
+```
+## Wybieranie
+id kto on-line
+
+* W chrome kopiujemy selector
+* Wklejamy Selectorgadget i szukamy co jest na stronie
+CSS lub xpath (https://msdn.microsoft.com/pl-pl/library/ms256086(v=vs.110).aspx)
+```{r}
+world_html <- html_nodes(webpage,'td:nth-child(1) > a')
+worlds<-html_text(world_html)
+online <- html_text(html_nodes(webpage,'td:nth-child(2)'))
+
+```
+
+lub XPath
+
+```{r}
+tbody<-html_nodes(webpage,xpath ='//*[@id="worlds"]/div[5]/div/div/div/table')
+```
+Jest jakis prioblem z html i nie wszytsko dzia?a (xpath skopiowany z chrome)
+
+```{r}
+library("rvest")
+url <- "http://en.wikipedia.org/wiki/List_of_U.S._states_and_territories_by_population"
+population <- url %>%
+  read_html() %>%
+  html_nodes(xpath='//*[@id="mw-content-text"]/div/table[1]') %>%
+  html_table()
+population <- population[[1]]
+
+
+```
+
+
+
+## TODO
+Ka?dy wybiera sobie ?wiat i pobiera tabele z nazwa, poziomem i typem uzytkownika.
+
+* Zrobi? histogram poziomu
+* Pogrupowac po type postaci
+Grupa na koniec porownuje kilka ?wiat?w
+
+
+
